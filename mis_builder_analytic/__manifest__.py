@@ -7,7 +7,7 @@
     "version": "12.0.1.0.0",
     "license": "AGPL-3",
     "author": "Tecnativa, Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/mis-builder",
+    "website": "https://github.com/OCA/mis-builder-contrib",
     "depends": ["mis_builder"],
     "data": [
         "views/mis_account_analytic_line_views.xml",
