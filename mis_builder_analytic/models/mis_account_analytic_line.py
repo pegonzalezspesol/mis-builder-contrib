@@ -1,7 +1,7 @@
 # Copyright 2018 Tecnativa - Ernesto Tejeda
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models, tools
+from odoo import fields, models, tools
 
 
 class MisAccountAnalyticLine(models.Model):
@@ -13,8 +13,9 @@ class MisAccountAnalyticLine(models.Model):
     analytic_line_id = fields.Many2one(
         string="Analytic entry", comodel_name="account.analytic.line"
     )
-    account_id = fields.Many2one(
-        string="Account", comodel_name="account.analytic.account"
+    account_id = fields.Many2one(string="Account", comodel_name="account.account")
+    analytic_account_id = fields.Many2one(
+        string="Analytic Account", comodel_name="account.analytic.account"
     )
     company_id = fields.Many2one(string="Company", comodel_name="res.company")
     balance = fields.Float(string="Balance")
@@ -24,7 +25,6 @@ class MisAccountAnalyticLine(models.Model):
         [("draft", "Unposted"), ("posted", "Posted")], string="Status"
     )
 
-    @api.model_cr
     def init(self):
         tools.drop_view_if_exists(self._cr, "mis_account_analytic_line")
         self._cr.execute(
@@ -34,7 +34,8 @@ class MisAccountAnalyticLine(models.Model):
                     aal.id AS id,
                     aal.id AS analytic_line_id,
                     aal.date as date,
-                    aal.account_id as account_id,
+                    aal.account_id as analytic_account_id,
+                    aal.general_account_id as account_id,
                     aal.company_id as company_id,
                     'posted'::VARCHAR as state,
                     CASE
